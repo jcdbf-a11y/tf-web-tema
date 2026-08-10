@@ -37,6 +37,7 @@ solicitações organizados por cliente.
 
 ![Modelo Conceitual](db/conceitual.png)
 [Modelo Logico](prisma/schema.prisma)
+[Modelo Físico](prisma/seed.js)
 
 ### Entidades
 
