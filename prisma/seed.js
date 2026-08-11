@@ -1,29 +1,35 @@
+require('dotenv').config();
 const { PrismaClient } = require('../generated/prisma/client');
-const prisma = new PrismaClient();
-
-
+const { PrismaPg } = require('@prisma/adapter-pg');
+const bcrypt = require('bcryptjs');
+ 
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
- 
+
+  const senhaHash1 = await bcrypt.hash('Gui33San', 10);
+  const senhaHash2 = await bcrypt.hash('lebron123', 10);
+
   const usuario1 = await prisma.usuario.create({
     data: {
       nome: 'Gui Santos',
       email: 'Guisantos33@gmail.com',
-      senhaHash: 'Gui33San',
+      senhaHash: senhaHash1,
       telefone: '3899966633',
     },
   });
- 
+
   const usuario2 = await prisma.usuario.create({
     data: {
       nome: 'Lebron James',
       email: 'Lebrongoat@gmail.com',
-      senhaHash: 'lebron123',
+      senhaHash: senhaHash2,
       telefone: '425435678',
     },
   });
- 
-  
+
+
   const endereco1 = await prisma.endereco.create({
     data: {
       usuarioId: usuario1.id,
@@ -35,7 +41,7 @@ async function main() {
       cep: '66560999',
     },
   });
- 
+
   const endereco2 = await prisma.endereco.create({
     data: {
       usuarioId: usuario2.id,
@@ -44,11 +50,11 @@ async function main() {
       complemento: '',
       cidade: 'Salinas',
       estado: 'Acre',
-      cep: '3960000',
+      cep: '69960000',
     },
   });
- 
-  
+
+
   const produto1 = await prisma.produto.create({
     data: {
       nome: 'Chapéu De Couro de Jacaré',
@@ -58,7 +64,7 @@ async function main() {
       imagemUrl: '',
     },
   });
- 
+
   const produto2 = await prisma.produto.create({
     data: {
       nome: 'Chapéu Fedora do Lebron',
@@ -69,7 +75,7 @@ async function main() {
     },
   });
 
-  
+
   const pedido1 = await prisma.pedido.create({
     data: {
       usuarioId: usuario1.id,
@@ -79,7 +85,7 @@ async function main() {
     },
   });
 
-  
+
   const itemPedido1 = await prisma.itemPedido.create({
     data: {
       pedidoId: pedido1.id,
@@ -89,7 +95,7 @@ async function main() {
     },
   });
 
-  
+
   const pagamento1 = await prisma.pagamento.create({
     data: {
       pedidoId: pedido1.id,
@@ -100,7 +106,7 @@ async function main() {
     },
   });
 
-  
+
   const encomenda1 = await prisma.encomendaPersonalizada.create({
     data: {
       usuarioId: usuario2.id,
@@ -112,7 +118,7 @@ async function main() {
     },
   });
 
-  
+
   const postagem1 = await prisma.postagem.create({
     data: {
       titulo: 'Por que o couro de jacaré de 20 metros é tão raro?',
@@ -123,7 +129,7 @@ async function main() {
     },
   });
 
-  
+
   const mensagem1 = await prisma.mensagem.create({
     data: {
       usuarioId: usuario1.id,
@@ -134,14 +140,14 @@ async function main() {
       respondida: false,
     },
   });
- 
+
 }
- 
+
 main()
-  .catch(() => {
+  .catch((erro) => {
+    console.error('Erro ao rodar o seed:', erro);
     process.exit(1);
   })
   .finally(async () => {
     await prisma.$disconnect();
   });
- 
