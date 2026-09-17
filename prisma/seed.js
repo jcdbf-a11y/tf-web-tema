@@ -1,8 +1,5 @@
-const prisma = require('./client');
-const bcrypt = require('bcryptjs');
- 
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
-const prisma = new PrismaClient({ adapter });
+import prisma from './client.js';
+import bcrypt from 'bcryptjs';
 
 async function main() {
   const senhaHash = await bcrypt.hash('admin123', 10);
@@ -62,7 +59,6 @@ async function main() {
   });
 
   console.log('Seed executado com sucesso.');
-
 }
 
 main()
