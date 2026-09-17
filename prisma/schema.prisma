@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -12,118 +7,46 @@ datasource db {
   provider = "postgresql"
 }
 
-model Usuario {
-  id            Int         @id @default(autoincrement())
-  nome          String
-  email         String      @unique
-  senhaHash     String      
-  telefone      String?
-  criadoEm      DateTime    @default(now())
+model ADM {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String   @unique
+  senhaHash String
+  telefone  String?
+  criadoEm  DateTime @default(now())
+  cnpj      String
 
-  enderecos  Endereco[]
-  pedidos    Pedido[]
-  encomendas EncomendaPersonalizada[]
-  mensagens  Mensagem[]
-
+  itens     Item[]
+  servicos  Servico[]
 }
 
-
-
-model Endereco {
-  id          Int    @id @default(autoincrement())
-  usuarioId   Int
-  logradouro  String
-  numero      String
-  complemento String?
-  cidade      String
-  estado      String
-  cep         String
-
-  usuario Usuario @relation(fields: [usuarioId], references: [id])
-  pedidos Pedido[]
-}
-
-model Produto {
-  id        Int    @id @default(autoincrement())
+model Item {
+  id        Int       @id @default(autoincrement())
   nome      String
   descricao String
   preco     Decimal
   estoque   Int
   imagemUrl String
+  tipo      TipoItem
+  criadoEm  DateTime  @default(now())
 
-  itensPedido ItemPedido[]
+  admId Int?
+  adm   ADM? @relation(fields: [admId], references: [id])
 }
 
-model Pedido {
-  id          Int      @id @default(autoincrement())
-  usuarioId   Int
-  enderecoId  Int
-  status      String
-  valorTotal  Decimal
-  criadoEm    DateTime @default(now())
-  atualizadoEm DateTime @updatedAt
-
-  usuario   Usuario   @relation(fields: [usuarioId], references: [id])
-  endereco  Endereco  @relation(fields: [enderecoId], references: [id])
-  itens     ItemPedido[]
-  pagamento Pagamento?
-  encomenda EncomendaPersonalizada?
-}
-
-model ItemPedido {
-  id            Int     @id @default(autoincrement())
-  pedidoId      Int
-  produtoId     Int
-  quantidade    Int
-  precoUnitario Decimal
-
-  pedido  Pedido  @relation(fields: [pedidoId], references: [id])
-  produto Produto @relation(fields: [produtoId], references: [id])
-}
-
-model Pagamento {
-  id            Int       @id @default(autoincrement())
-  pedidoId      Int       @unique
-  forma         String
-  parcelas      Int
-  status        String
-  dataPagamento DateTime?
-
-  pedido Pedido @relation(fields: [pedidoId], references: [id])
-}
-
-model EncomendaPersonalizada {
+model Servico {
   id              Int      @id @default(autoincrement())
-  usuarioId       Int
+  nome            String
   caracteristicas String
-  canalContato    String?
-  status          String
   precoEstimado   Decimal?
-  pedidoId        Int?     @unique
+  criadoEm        DateTime @default(now())
 
-  usuario Usuario @relation(fields: [usuarioId], references: [id])
-  pedido  Pedido? @relation(fields: [pedidoId], references: [id])
+  admId Int?
+  adm   ADM? @relation(fields: [admId], references: [id])
 }
 
-model Postagem {
-  id          Int      @id @default(autoincrement())
-  titulo      String
-  conteudo    String
-  tipo        String
-  urlVideo    String?
-  publicadoEm DateTime @default(now())
-}
-
-model Mensagem {
-  id         Int      @id @default(autoincrement())
-  usuarioId  Int?
-  nome       String?
-  email      String
-  assunto    String
-  mensagem   String
-  respondida Boolean  @default(false)
-  criadoEm   DateTime @default(now())
-
-  usuario Usuario? @relation(fields: [usuarioId], references: [id])
+enum TipoItem {
+  CHAPEU_PRONTO
+  ITEM_MONTAGEM
 }
 
