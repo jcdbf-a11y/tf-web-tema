@@ -30,8 +30,7 @@ sobre cuidados com o produto.
 
 **Problema que resolve:** hoje esses três serviços (loja, blog e encomendas sob medida)
 costumam estar espalhados em canais diferentes (WhatsApp, Instagram, site estático).
-O sistema centraliza tudo em um único lugar, com histórico de pedidos, pagamentos e
-solicitações organizados por cliente.
+O sistema centraliza tudo em um único lugar.
 
 ## Modelo Conceitual
 
