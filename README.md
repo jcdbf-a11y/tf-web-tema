@@ -20,17 +20,15 @@
 )
 ## Sobre o projeto
 
-**Tema:** plataforma de venda de chapéus que une três frentes em um único sistema —
-loja online (e-commerce), blog institucional com conteúdo sobre cuidados com o produto,
-e um serviço de encomendas personalizadas sob medida.
-
+**Tema:** Um site que de venda e constomização de chapeus além de conselhos para melhor
+qualidade e tempo util do seu chapeu.
 **Usuários do sistema:** clientes que desejam comprar chapéus prontos, encomendar peças
 personalizadas, tirar dúvidas com a equipe de suporte e consumir conteúdo educativo
 sobre cuidados com o produto.
 
-**Problema que resolve:** hoje esses três serviços (loja, blog e encomendas sob medida)
-costumam estar espalhados em canais diferentes (WhatsApp, Instagram, site estático).
-O sistema centraliza tudo em um único lugar.
+**Problema que resolve:** hoje o maior problema é para fazer as diversas vendas e 
+customização de varias pessoas, isso costumam estar espalhados em canais diferentes como
+(WhatsApp, Instagram). O sistema centraliza tudo em um único lugar.
 
 ## Modelo Conceitual
 
@@ -48,20 +46,20 @@ centro do domínio: origina endereços, pedidos, encomendas e mensagens de conta
 
 **Endereço** — representa um endereço de entrega cadastrado por um usuário. Possui `id`,
 `usuarioId` (chave estrangeira obrigatória, já que todo endereço pertence a um cliente),
-`logradouro`, `numero` e `complemento` (opcional, pois nem todo endereço tem apartamento
+`logradouro`, `numero` (opcional, pois nem todo endereço tem apartamento
 ou bloco), além de `cidade`, `estado` e `cep`, necessários para calcular frete e entrega.
 Um cliente pode ter mais de um endereço (ex: casa e trabalho), por isso a relação é de
 um-para-muitos.
 
 **Produto** — representa os chapéus disponíveis para compra direta na loja. Possui `id`,
-`nome` e `descricao` (para exibição no catálogo), `preco` e `estoque` (para controle de
+`nome` e `descricao` (para exibição no catálogo), `estoque` (para controle de
 venda e disponibilidade) e `imagemUrl` (para exibição visual do produto na loja online).
 
 **Pedido** — representa uma compra feita por um usuário. Possui `id`, `usuarioId` e
 `enderecoId` (chaves estrangeiras obrigatórias — todo pedido pertence a um cliente e é
 entregue em um endereço específico), `status` (para acompanhar o ciclo da compra:
 pendente, pago, enviado, entregue ou cancelado), `valorTotal` (soma dos itens) e
-`criadoEm`/`atualizadoEm` (para rastrear quando o pedido foi feito e a última mudança de
+`criadoEm` (para rastrear quando o pedido foi feito e a última mudança de
 status).
 
 **Item_Pedido** — entidade associativa entre Pedido e Produto, criada para resolver o
@@ -104,7 +102,7 @@ quem enviou), `email` e `assunto`/`mensagem` (conteúdo do contato) e `respondid
 - Um **Endereço** pode receber vários **Pedidos**, mas cada Pedido é entregue em um único Endereço.
 - Um **Usuario** pode realizar vários **Pedidos**, mas cada Pedido pertence a um único Usuario.
 - Um **Produto** pode fazer parte de vários **Item_Pedido**, mas cada Item_Pedido referencia um único Produto.
-- Uma **Encomenda_Personalizada** pode gerar no máximo um **Pedido**, e um **Pedido** pode ter no máximo uma Encomenda_Personalizada de origem.
+- Uma **Encomenda_Personalizada** pode gerar varias **Pedido**, e um **Pedido** pode ter varias Encomenda_Personalizada de origem.
 - Um **Pedido** possui um ou mais **Item_Pedido** (nunca um pedido vazio), e cada Item_Pedido pertence a um único Pedido.
 - Um **Pedido** gera no máximo um **Pagamento**, e cada Pagamento pertence a exatamente um Pedido.
 - Um **Usuario** pode solicitar várias **Encomenda_Personalizada**, mas cada Encomenda pertence a um único Usuario.
