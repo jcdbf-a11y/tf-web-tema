@@ -56,4 +56,4 @@ jobs:
 
       - name: Rodar testes do Bruno
         working-directory: ./bruno
-        run: bru run --env Local
+        run: bru run --env CI
