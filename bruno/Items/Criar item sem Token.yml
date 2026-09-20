@@ -1,0 +1,35 @@
+info:
+  name: Criar item sem Token
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: "{{baseUrl}}/items"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "Chapeu Panama",
+        "descricao": "Chapeu de palha estilo panama.",
+        "preco": "7500.00",
+        "estoque": 10,
+        "imagemUrl": "",
+        "tipo": "CHAPEU_PRONTO"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("deve retornar status 401 sem token", function() {
+          expect(res.getStatus()).to.equal(401);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

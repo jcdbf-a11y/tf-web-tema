@@ -1,0 +1,36 @@
+info:
+  name: Atualizar item
+  type: http
+  seq: 8
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/items/{{itemId}}"
+  body:
+    type: json
+    data: |-
+      {
+        "estoque": 20
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("deve retornar status 200", function() {
+          expect(res.getStatus()).to.equal(200);
+        });
+
+        test("deve atualizar o estoque", function() {
+          expect(res.getBody().estoque).to.equal(20);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

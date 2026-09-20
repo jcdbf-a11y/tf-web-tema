@@ -1,0 +1,35 @@
+info:
+  name: Login ADM senha invalida
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{baseUrl}}/adm/login"
+  body:
+    type: json
+    data: |-
+      {
+        "email": "admin@exemplo.com",
+        "senha": "senhaerrada"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("deve retornar status 401", function() {
+          expect(res.getStatus()).to.equal(401);
+        });
+
+        test("deve retornar mensagem de credenciais invalidas", function() {
+          expect(res.getBody().erro).to.equal('Credenciais inválidas.');
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

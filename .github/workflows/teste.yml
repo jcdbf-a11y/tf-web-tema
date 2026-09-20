@@ -1,0 +1,59 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL_TEST }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Gerar Prisma Client
+        run: npx prisma generate
+
+      - name: Resetar banco de teste e aplicar migrations
+        run: npx prisma migrate reset --force
+
+      - name: Popular banco de teste
+        run: npx prisma db seed
+
+      - name: Subir servidor em background
+        run: node index.js &
+
+      - name: Aguardar servidor responder
+        run: |
+          for i in $(seq 1 15); do
+            if curl -s http://localhost:3000/status > /dev/null; then
+              echo "Servidor no ar"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Servidor não respondeu a tempo"
+          exit 1
+
+      - name: Instalar Bruno CLI
+        run: npm install -g @usebruno/cli
+
+      - name: Rodar testes do Bruno
+        working-directory: ./bruno
+        run: bru run --env Local

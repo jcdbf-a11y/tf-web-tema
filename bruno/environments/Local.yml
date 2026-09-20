@@ -1,0 +1,14 @@
+name: Local
+variables:
+  - name: baseUrl
+    value: https://sturdy-fiesta-v6xggj7995vp2wg9j-3000.app.github.dev
+  - name: token
+    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1JZCI6MSwiaWF0IjoxNzg5NzkwOTU0LCJleHAiOjE3ODk4NzczNTR9.Zw4T4aHV5EobBg4vL0Opvq2HJXOZwA1QPB-jThUSe6E
+  - name: itemId
+    value:
+      type: number
+      data: "3"
+  - name: servicoId
+    value:
+      type: number
+      data: "3"

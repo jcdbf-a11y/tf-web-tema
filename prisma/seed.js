@@ -32,6 +32,7 @@ async function main() {
         preco: '10000.00',
         estoque: 13,
         imagemUrl: '',
+        tipo: 'CHAPEU_PRONTO',
       },
       {
         nome: 'Chapeu Fedora',
@@ -39,6 +40,7 @@ async function main() {
         preco: '5000.00',
         estoque: 6,
         imagemUrl: '',
+        tipo: 'CHAPEU_PRONTO',
       },
     ],
   });

@@ -1,0 +1,40 @@
+info:
+  name: Criar serviço com token
+  type: http
+  seq: 13
+
+http:
+  method: POST
+  url: "{{baseUrl}}/servicos"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "Limpeza de chapeu",
+        "caracteristicas": "Limpeza profunda e restauracao de cor.",
+        "precoEstimado": "150.00"
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setEnvVar("servicoId", res.body.id);
+    - type: tests
+      code: |-
+        test("deve retornar status 201", function() {
+          expect(res.getStatus()).to.equal(201);
+        });
+
+        test("deve retornar o servico criado com id", function() {
+          expect(res.getBody().id).to.not.be.undefined;
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

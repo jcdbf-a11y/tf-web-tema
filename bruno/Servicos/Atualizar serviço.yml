@@ -1,0 +1,36 @@
+info:
+  name: Atualizar serviço
+  type: http
+  seq: 14
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/servicos/{{servicoId}}"
+  body:
+    type: json
+    data: |-
+      {
+        "precoEstimado": "180"
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("deve retornar status 200", function() {
+          expect(res.getStatus()).to.equal(200);
+        });
+
+        test("deve atualizar o preco estimado", function() {
+          expect(res.getBody().precoEstimado).to.equal("180");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

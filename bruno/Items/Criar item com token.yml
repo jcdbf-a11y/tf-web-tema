@@ -1,0 +1,43 @@
+info:
+  name: Criar item com token
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: "{{baseUrl}}/items"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "Chapeu Panama",
+        "descricao": "Chapeu de palha estilo panama.",
+        "preco": "7500.00",
+        "estoque": 10,
+        "imagemUrl": "",
+        "tipo": "CHAPEU_PRONTO"
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setEnvVar("itemId", res.body.id);
+    - type: tests
+      code: |-
+        test("deve retornar status 201", function() {
+          expect(res.getStatus()).to.equal(201);
+        });
+
+        test("deve retornar o item criado com id", function() {
+          expect(res.getBody().id).to.not.be.undefined;
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

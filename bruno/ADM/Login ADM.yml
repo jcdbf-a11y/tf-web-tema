@@ -1,0 +1,37 @@
+info:
+  name: Login ADM
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/adm/login"
+  body:
+    type: json
+    data: |-
+      {
+        "email": "admin@exemplo.com",
+        "senha": "admin123"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setEnvVar("token", res.body.token);
+    - type: tests
+      code: |-
+        test("deve retornar status 200", function() {
+          expect(res.getStatus()).to.equal(200);
+        });
+
+        test("deve retornar um token", function() {
+          expect(res.getBody().token).to.not.be.undefined;
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

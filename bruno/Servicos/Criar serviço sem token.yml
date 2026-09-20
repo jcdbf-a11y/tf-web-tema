@@ -1,0 +1,32 @@
+info:
+  name: Criar serviço sem token
+  type: http
+  seq: 12
+
+http:
+  method: POST
+  url: "{{baseUrl}}/servicos"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "Limpeza de chapeu",
+        "caracteristicas": "Limpeza profunda e restauracao de cor.",
+        "precoEstimado": "150.00"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("deve retornar status 401 sem token", function() {
+          expect(res.getStatus()).to.equal(401);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
