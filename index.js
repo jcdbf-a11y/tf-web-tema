@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 
 import logger from './middlewares/logger.js';
-import erroGlobais from './middlewares/erroGlobais.js';
+import erroGlobais from './middlewares/errosGlobais.js';
 import admRoutes from './routes/ADM.js';
 import itemRoutes from './routes/Item.js';
 import servicoRoutes from './routes/Servico.js';
