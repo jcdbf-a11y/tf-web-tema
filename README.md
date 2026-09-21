@@ -62,8 +62,12 @@ estrangeira que indica a qual ADM o item pertence).
 ### Relacionamentos
 
 - Um **ADM** pode oferecer vários **Serviços**, mas cada Serviço é associado a um único ADM.
-- Um **ADM** pode possuir vários **itens**, mas cada item pertence a um único ADM.
+- Um **ADM** pode possuir vários **itens**, mas cada item pertence a um único 
+ADM.
 
+Tabela ADM
 ![Tabelas no Neon](Tabela1.png)
+Tabela Seviço
 ![Tabela no Neon](Tabela3.png)
+Tabela Item
 ![Tabela no Neon](Tabela2.png)
